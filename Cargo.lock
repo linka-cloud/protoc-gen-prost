@@ -409,9 +409,9 @@ dependencies = [
 
 [[package]]
 name = "prost-validate-build"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ab43b6e5205c68862d6de355f00ad8925e53040bbe8712e1a8baea13044d4fd"
+checksum = "c7d6cd03a548e9d5667505b1aac8e482d3ac1ca6dacdf8abb087971e62b53ac4"
 dependencies = [
  "heck",
  "prost-build",
@@ -422,9 +422,9 @@ dependencies = [
 
 [[package]]
 name = "prost-validate-derive-core"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b98641bf15f3397b4605c3d090d1d14dc54bca51a0db4aafa25e8caed6c4535d"
+checksum = "63172761d1942a0c98a12776c9c168eedd8e481b0e024a81eca5a1e2a6152ab2"
 dependencies = [
  "anyhow",
  "darling",
@@ -443,9 +443,9 @@ dependencies = [
 
 [[package]]
 name = "prost-validate-types"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "934047e83d036525d54c4d349066059da8b4a7b0b978f21d2bcad125b3e49eae"
+checksum = "f8f172d4e1e2daee8e327e1d271d9e9ed6deb72c0664a1231d8cbac24cef3604"
 dependencies = [
  "anyhow",
  "once_cell",
@@ -506,6 +506,7 @@ dependencies = [
  "prost-validate-derive-core",
  "prost-validate-types",
  "protoc-gen-prost",
+ "quote",
  "syn 2.0.75",
 ]
 

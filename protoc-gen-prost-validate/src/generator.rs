@@ -6,6 +6,7 @@ use prost_types::compiler::code_generator_response::File;
 use prost_validate_build::Builder;
 use protoc_gen_prost::{Error, Generator, ModuleRequest, ModuleRequestSet, Result};
 use std::collections::HashMap;
+use syn::__private::quote::quote;
 use syn::__private::ToTokens;
 
 pub struct ProstValidateGenerator {
@@ -86,7 +87,8 @@ impl ProstValidateGenerator {
             .items
             .iter()
             .filter_map(filter_item)
-            .map(|stream| prost_validate_derive_core::derive(stream))
+            .flatten()
+            .map(|item| prost_validate_derive_core::derive_with_module(item.stream, item.module))
             .for_each(|stream| stream.to_tokens(&mut file_stream));
 
         if file_stream.is_empty() {
@@ -95,7 +97,6 @@ impl ProstValidateGenerator {
 
         let mut res = Vec::with_capacity(2);
         if self.insert_include {
-            // only include file if it is part of the proto generation request
             res.push(
                 match request.append_to_file(|buf| {
                     buf.push_str("include!(\"");
@@ -122,21 +123,52 @@ impl ProstValidateGenerator {
     }
 }
 
-fn filter_item(item: &syn::Item) -> Option<TokenStream> {
+struct Item {
+    module: Option<TokenStream>,
+    stream: TokenStream,
+}
+
+fn filter_item(item: &syn::Item) -> Option<Vec<Item>> {
+    do_filter_item(item, None)
+}
+
+fn do_filter_item(item: &syn::Item, module: Option<TokenStream>) -> Option<Vec<Item>> {
     match item {
         syn::Item::Struct(s) => {
             if has_validator_derive(&s.attrs) {
-                Some(item.to_token_stream())
+                Some(vec![Item {
+                    stream: item.to_token_stream(),
+                    module,
+                }])
             } else {
                 None
             }
         }
         syn::Item::Enum(e) => {
             if has_validator_derive(&e.attrs) {
-                Some(item.to_token_stream())
+                Some(vec![Item {
+                    stream: item.to_token_stream(),
+                    module,
+                }])
             } else {
                 None
             }
+        }
+        syn::Item::Mod(m) => {
+            let module = match module {
+                Some(m2) => {
+                    let ident = m.ident.to_token_stream();
+                    Some(quote! { #m2::#ident })
+                }
+                None => Some(m.ident.to_token_stream()),
+            };
+            let mut items = Vec::new();
+            for item in m.content.as_ref()?.1.iter() {
+                if let Some(item) = do_filter_item(item, module.clone()) {
+                    items.extend(item);
+                }
+            }
+            Some(items)
         }
         _ => None,
     }
