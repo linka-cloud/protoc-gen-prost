@@ -98,6 +98,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fcaabb2fef8c910e7f4c7ce9f67a1283a1715879a7c230ca9d6d1ae31f16d91"
 
 [[package]]
+name = "email_address"
+version = "0.2.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e079f19b08ca6239f47f8ba8509c11cf3ea30095831f7fed61441475edd8c449"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "errno"
 version = "0.3.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -139,6 +148,17 @@ name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
+
+[[package]]
+name = "http"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "21b9ddb458710bc376481b842f5da65cdf31522de232c1ca8146abce2a358258"
+dependencies = [
+ "bytes",
+ "fnv",
+ "itoa",
+]
 
 [[package]]
 name = "ident_case"
@@ -183,6 +203,12 @@ checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
 dependencies = [
  "either",
 ]
+
+[[package]]
+name = "itoa"
+version = "1.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "49f1f14873335454500d59611f1cf4a4b0f786f9ac11f4312a78e4cf2566695b"
 
 [[package]]
 name = "libc"
@@ -408,10 +434,28 @@ dependencies = [
 ]
 
 [[package]]
-name = "prost-validate-build"
+name = "prost-validate"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7d6cd03a548e9d5667505b1aac8e482d3ac1ca6dacdf8abb087971e62b53ac4"
+checksum = "a78e88dae41b15818cb6f8ad4e3fc9be3559b3442e714f1f3b8c051d89e021bd"
+dependencies = [
+ "anyhow",
+ "email_address",
+ "http",
+ "itertools",
+ "once_cell",
+ "prost",
+ "prost-types",
+ "regex",
+ "thiserror",
+ "time",
+]
+
+[[package]]
+name = "prost-validate-build"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08bc4f2d4cc9e6985b7a7c4fff3c1de3c0be0593c91a743db8bf21c9c49c075a"
 dependencies = [
  "heck",
  "prost-build",
@@ -422,9 +466,9 @@ dependencies = [
 
 [[package]]
 name = "prost-validate-derive-core"
-version = "0.2.4"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63172761d1942a0c98a12776c9c168eedd8e481b0e024a81eca5a1e2a6152ab2"
+checksum = "54d0b34e27b330cee587f2baac47662df5d38e7c3b0a672a75b10d77e4d06c75"
 dependencies = [
  "anyhow",
  "darling",
@@ -443,9 +487,9 @@ dependencies = [
 
 [[package]]
 name = "prost-validate-types"
-version = "0.2.4"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8f172d4e1e2daee8e327e1d271d9e9ed6deb72c0664a1231d8cbac24cef3604"
+checksum = "9470a47297ee64c728a034ad58209cae1d3cf606ee94406e81963ce0bef0c00a"
 dependencies = [
  "anyhow",
  "once_cell",
@@ -496,18 +540,22 @@ dependencies = [
 name = "protoc-gen-prost-validate"
 version = "0.0.1"
 dependencies = [
+ "once_cell",
  "prettyplease",
  "proc-macro2",
  "prost",
  "prost-build",
  "prost-reflect",
  "prost-types",
+ "prost-validate",
  "prost-validate-build",
  "prost-validate-derive-core",
  "prost-validate-types",
  "protoc-gen-prost",
  "quote",
+ "regex",
  "syn 2.0.75",
+ "time",
 ]
 
 [[package]]
@@ -660,6 +708,26 @@ dependencies = [
  "redox_syscall",
  "rustix",
  "windows-sys 0.42.0",
+]
+
+[[package]]
+name = "thiserror"
+version = "1.0.64"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d50af8abc119fb8bb6dbabcfa89656f46f84aa0ac7688088608076ad2b459a84"
+dependencies = [
+ "thiserror-impl",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "1.0.64"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08904e7672f5eb876eaaf87e0ce17857500934f4981c4a0ab2b4aa98baac7fc3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.75",
 ]
 
 [[package]]
