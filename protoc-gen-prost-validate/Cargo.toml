@@ -16,9 +16,9 @@ prost-build.workspace = true
 prost-types.workspace = true
 prost.workspace = true
 protoc-gen-prost = { version = "0.4.0", path = "../protoc-gen-prost" }
-prost-validate-build = { version = "0.2.5" }
-prost-validate-derive-core = { version = "0.2.5" }
-prost-validate-types = { version = "0.2.5" }
+prost-validate-build = { version = "0.2.6" }
+prost-validate-derive-core = { version = "0.2.6" }
+prost-validate-types = { version = "0.2.6" }
 syn = "2.0.75"
 proc-macro2 = "1.0.86"
 prost-reflect = "0.14.2"
